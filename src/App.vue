@@ -1,14 +1,15 @@
 
 <template>
-  <h1>123</h1>
+  <h1>{{profiles.length}}</h1>
   <ul>
-    <li v-for="profile in profiles">
-    {{ profile._id }} 
+    <li v-for="profile in profiles" align="left">
+      <img :src="profile.imageUrl" alt="" width="150">
+      {{ profile._id }} 
       {{ profile.username }}
-      <img :src="profile.imageUrl" alt="">
       {{profile.imageUrl}}
     </li>
   </ul>
+  <input type="text" v-model="id">
   <button @click="insertDoc">Insert</button>
   <button @click="getDoc">Get</button>
   <button @click="deleteDoc">Delete</button>
@@ -20,7 +21,8 @@
   export default {
     data() {
       return {
-        profiles: []
+        profiles: [],
+        id: ""
       }
     },
     methods: {
@@ -79,7 +81,7 @@
           body: JSON.stringify({              
             "username": "satfri",
             "email": "fri@gmail.com",
-            "imageUrl": "https://drive.google.com/file/d/1hZfS5P7133Z64ylWcyPTs7PebV_EO_om/view?usp=sharing"            
+            "imageUrl": "https://freeimage.host/i/gYiWOJ"            
           })
           .then((response) => response.text())
           .then((data) => {
