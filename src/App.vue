@@ -6,7 +6,8 @@
       <img :src="profile.imageUrl" alt="" width="50">
       {{ profile._id }} 
       {{ profile.username }}
-      {{profile.imageUrl}}
+      {{ profile.imageUrl }}
+      <div v-html="showImage(profile.multipleImageUrl)"></div>      
       <a href="#" @click="getDoc(profile._id)">Edit</a> | 
       <a href="#" @click="deleteDoc(profile._id)">Delete</a>
     </li>
@@ -15,6 +16,7 @@
   <input type="text" placeholder="username" v-model="formValues.username">
   <input type="text" placeholder="email" v-model="formValues.email">
   <input type="text" placeholder="imageUrl" v-model="formValues.imageUrl">
+  <input type="text" placeholder="multipleImageUrl" v-model="formValues.multipleImageUrl">
   <button @click="insertDoc">Insert</button>  
   <button @click="updateDoc">Update</button>
 </template>
@@ -25,15 +27,27 @@
     data() {
       return {
         profiles: [],
-        id: "",
+        id: "", // id to update PUT:id, was set by GET:id
         formValues: {
           username: '',
           email: '',
-          imageUrl: ''
+          imageUrl: '',
+          multipleImageUrl: ''
         }
       }
     },
     methods: {      
+      showImage(imageUrls) {
+        let urls = '';
+        if (imageUrls) {          
+          const imgArr = imageUrls.split(',')  
+          // return imgArr.length
+          imgArr.forEach(element => {
+            urls += `<img src="${element}" width="50">`
+          });          
+        }         
+        return urls;
+      },
       insertDoc() { // done
         fetch(api, {
             method: 'POST',
@@ -67,7 +81,7 @@
           })        
       },
       getDoc(id) { // done      
-        this.id = id
+        this.id = id // PUT:id needs this to update the selected document
         fetch(api + id, {
             method: 'GET'
           })
@@ -89,6 +103,7 @@
           .then((response) => response.text())
           .then((data) => {
             console.log(data)
+            this.mounted()
           })
           .catch((err) => {
             if (err) throw err;
