@@ -10,14 +10,13 @@
       <a href="#" @click="getDoc(profile._id)">Edit</a> | 
       <a href="#" @click="deleteDoc(profile._id)">Delete</a>
     </li>
-  </ul>
-  <input type="text" v-model.trim="id">{{id}}
-  <button @click="insertDoc">Insert</button>  
-  <button @click="updateDoc">Update</button>
+  </ul>    
   <hr>
   <input type="text" placeholder="username" v-model="formValues.username">
   <input type="text" placeholder="email" v-model="formValues.email">
   <input type="text" placeholder="imageUrl" v-model="formValues.imageUrl">
+  <button @click="insertDoc">Insert</button>  
+  <button @click="updateDoc">Update</button>
 </template>
 
 <script>
