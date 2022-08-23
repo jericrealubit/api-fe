@@ -3,10 +3,11 @@
   <h1>{{profiles.length}}</h1>
   <ul>
     <li v-for="profile in profiles" align="left">
-      <img :src="profile.imageUrl" alt="" width="150">
+      <img :src="profile.imageUrl" alt="" width="50">
       {{ profile._id }} 
       {{ profile.username }}
       {{profile.imageUrl}}
+      <a href="#" @click="editDoc(profile._id)">Edit</a>
     </li>
   </ul>
   <input type="text" v-model.trim="id">{{id}}
@@ -14,6 +15,10 @@
   <button @click="getDoc">Get</button>
   <button @click="deleteDoc">Delete</button>
   <button @click="updateDoc">Update</button>
+  <hr>
+  <input type="text" placeholder="username" v-model="formValues.username">
+  <input type="text" placeholder="email" v-model="formValues.email">
+  <input type="text" placeholder="imageUrl" v-model="formValues.imageUrl">
 </template>
 
 <script>
@@ -22,22 +27,26 @@
     data() {
       return {
         profiles: [],
-        id: ""
+        id: "",
+        formValues: {
+          username: '',
+          email: '',
+          imageUrl: ''
+        }
       }
     },
     methods: {
+      editDoc(id) {        
+        this.id = id;
+        this.getDoc()        
+      },
       insertDoc() { // done
         fetch(api, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-              // data you intend to send as JSON to the server (payload)
-              "username": "apple",
-              "email": "apple@gmail.com",
-              "imageUrl": "https://iili.io/gYiWOJ.jpg"            
-            })
+            body: JSON.stringify(this.formValues)            
           })
           .then((response) => response.text())
           .then((data) => {
@@ -53,11 +62,7 @@
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({              
-              "username": "satfrisun",
-              "email": "fri@gmail.com",
-              "imageUrl": "https://freeimage.host/i/gYiWOJ"            
-            })
+            body: JSON.stringify(this.formValues)
           })
           .then((response) => response.text())
           .then((data) => {
@@ -74,6 +79,9 @@
           .then((response) => response.json())
           .then((data) => {
             console.log(data)
+              this.formValues.username = data.username
+              this.formValues.email =  data.email
+              this.formValues.imageUrl =  data.imageUrl
           })
           .catch((err) => {
             if (err) throw err;
