@@ -59,6 +59,7 @@
           .then((response) => response.text())
           .then((data) => {
             console.log(data)
+            this.getAll();
           })
           .catch((err) => {
             if (err) throw err;
@@ -75,6 +76,7 @@
           .then((response) => response.text())
           .then((data) => {
             console.log(data)
+            this.getAll();
           })
           .catch((err) => {
             if (err) throw err;
@@ -88,9 +90,10 @@
           .then((response) => response.json())
           .then((data) => {
             console.log(data)
-              this.formValues.username = data.username
-              this.formValues.email = data.email
-              this.formValues.imageUrl = data.imageUrl
+            this.formValues.username = data.username
+            this.formValues.email = data.email
+            this.formValues.imageUrl = data.imageUrl
+            this.formValues.multipleImageUrl = data.multipleImageUrl            
           })
           .catch((err) => {
             if (err) throw err;
@@ -103,16 +106,15 @@
           .then((response) => response.text())
           .then((data) => {
             console.log(data)
-            this.mounted()
+            this.getAll();
           })
           .catch((err) => {
             if (err) throw err;
           })
         
-      }
-    },
-    mounted() {      
-      fetch(api)
+      },
+      getAll() {
+        fetch(api)
         .then((response) => response.json())
         .then((data) => {
           this.profiles = data
@@ -120,6 +122,10 @@
         .catch((err) => {
           if (err) throw err;
         })
+      }
+    },
+    mounted() {      
+      this.getAll();
     }
   }
 </script>
