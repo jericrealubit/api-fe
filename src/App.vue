@@ -67,7 +67,8 @@
             if (err) throw err;
           })        
       },
-      getDoc(id) { // done                
+      getDoc(id) { // done      
+        this.id = id
         fetch(api + id, {
             method: 'GET'
           })
