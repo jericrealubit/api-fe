@@ -7,13 +7,12 @@
       {{ profile._id }} 
       {{ profile.username }}
       {{profile.imageUrl}}
-      <a href="#" @click="editDoc(profile._id)">Edit</a>
+      <a href="#" @click="getDoc(profile._id)">Edit</a> | 
+      <a href="#" @click="deleteDoc(profile._id)">Delete</a>
     </li>
   </ul>
   <input type="text" v-model.trim="id">{{id}}
-  <button @click="insertDoc">Insert</button>
-  <button @click="getDoc">Get</button>
-  <button @click="deleteDoc">Delete</button>
+  <button @click="insertDoc">Insert</button>  
   <button @click="updateDoc">Update</button>
   <hr>
   <input type="text" placeholder="username" v-model="formValues.username">
@@ -35,11 +34,7 @@
         }
       }
     },
-    methods: {
-      editDoc(id) {        
-        this.id = id;
-        this.getDoc()        
-      },
+    methods: {      
       insertDoc() { // done
         fetch(api, {
             method: 'POST',
@@ -72,23 +67,23 @@
             if (err) throw err;
           })        
       },
-      getDoc() { // done
-        fetch(api + this.id, {
+      getDoc(id) { // done                
+        fetch(api + id, {
             method: 'GET'
           })
           .then((response) => response.json())
           .then((data) => {
             console.log(data)
               this.formValues.username = data.username
-              this.formValues.email =  data.email
-              this.formValues.imageUrl =  data.imageUrl
+              this.formValues.email = data.email
+              this.formValues.imageUrl = data.imageUrl
           })
           .catch((err) => {
             if (err) throw err;
           })
       },
-      deleteDoc() { // done
-        fetch(api + this.id, {
+      deleteDoc(id) { // done
+        fetch(api + id, {
             method: 'DELETE'           
           })
           .then((response) => response.text())
